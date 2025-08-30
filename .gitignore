@@ -1,0 +1,63 @@
+
+# Node.js
+node_modules/
+npm-debug.log*
+pnpm-debug.log*
+
+
+# Build outputs
+dist/
+build/
+out/
+.next/
+web-build/
+.expo/
+.expo-shared/
+artifacts/
+cache/
+typechain-types/
+
+
+# Logs
+logs/
+*.log
+*.log.*
+
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Databases
+*.sqlite
+*.db
+
+# Test / Coverage
+coverage/
+*.lcov
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# TypeScript
+*.tsbuildinfo
+
+
+
+# Expo / React Native
+.expo/
+*.apk
+*.ipa
+ios/
+android/
+
+
+# Generated Assets
+uploads/
+qrcodes/
