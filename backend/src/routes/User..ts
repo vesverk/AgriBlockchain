@@ -1,14 +1,20 @@
 import { Request,Response } from "express";
 import { Router } from "express";
-import z, { object, string } from "zod"
+import z, { object, string, success } from "zod"
 import jwt from "jsonwebtoken"
 import { PrismaClient,Role } from "@prisma/client"; 
 import bcrypt from "bcrypt"
+import { authentication, Logging } from "../middleware/auth.js";
 
 export function generateToken(username:string,email:string,firstName:string,lastName:string){
     const accessToken= jwt.sign({username,email},process.env.ACCESS_TOKEN_SECRET as string)
     const refreshToken=jwt.sign({username,email,firstName,lastName},process.env.REFREAH_TOKEN_SECRET as string)
     return {accessToken,refreshToken}
+}
+
+interface jwtPayload{
+    username:string,
+    email:string
 }
 
 const roles=["Consumer","Farmer","Distributor","Retailer","Admin"]
@@ -91,3 +97,48 @@ userRouter.post("/signin",async (req:Request,res:Response)=>{
 })
 
 
+userRouter.post("/update-profile",authentication,async(req:Logging,res)=>{
+    const id=req.id
+    const user=await client.user.findFirst({
+        where:{
+            id:id as number
+        }
+    })
+    const userSchema=z.object({
+        email:z.string().optional(),
+        password:z.string().optional(),
+        firstName:z.string().optional(),
+        lastName:z.string().optional(),
+    })
+    const username=user?.username
+    const resp=userSchema.safeParse(req.body)
+    if(resp.data!=success) return res.status(404).json({message:"no input for changes"})
+    const {email,password,firstName,lastName} =resp.data
+    const {refreshToken,accessToken}= generateToken(username as string,email as string,firstName as string,lastName as string)
+    const updateUser=await client.user.updateMany({
+        where:{
+            id:id as number,
+        },
+        data:{
+            email:email as string,
+            password:password as string,
+            firstName:firstName as string,
+            lastName:lastName as string,
+            refreshToken
+        }
+    })
+    if(!updateUser) return res.status(402).json({message:"User data not updated"})
+    res.status(200).json({message:"user data updated",accessToken})
+})
+
+userRouter.get("/user-details",authentication,async(req:Logging,res):Promise<any>=>{
+    const id=req.id
+    const user=await client.user.findFirst({
+        where:{
+            id:id as number
+        }
+    })
+    if(!user) return res.status(404).json({message:"User not found"})
+
+    res.status(200).json({message:"user found",user})
+})  
