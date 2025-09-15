@@ -1,14 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import { Leaf } from 'lucide-react-native';
 
 const Header: React.FC = () => {
   return (
     <View style={styles.container}>
       <View style={styles.left}>
-        <Image
-          source={require('../resources/logo.png')} 
-          style={styles.logo}
-        />
+        <Leaf size={28} color="#24753e" style={styles.logo} />
         <Text style={styles.title}>TrueHarvest</Text>
       </View>
       <TouchableOpacity onPress={() => console.log('Menu clicked')}>
@@ -16,7 +14,7 @@ const Header: React.FC = () => {
           source={require('../resources/dropdown.png')}   
           style={styles.menuIcon}
         />
-       </TouchableOpacity>       
+      </TouchableOpacity>       
     </View>
   );
 };
@@ -42,9 +40,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
-    width: 28,
-    height: 28,
-    borderRadius: 6,
     marginRight: 8,
   },
   title: {

@@ -1,14 +1,16 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react-native';
+import { Leaf } from 'lucide-react-native';
 
 const GetStartedpage: React.FC = () => {
   return (
-    <View style={styles.container}>
+    <ImageBackground 
+      source={require('../resources/HeroImage.png')} 
+      style={styles.container} 
+      imageStyle={styles.backgroundImage}
+    >
       <View style={styles.logoBox}>
-        <Image
-          source={require('../resources/logo.png')}
-          style={styles.logo}
-        />
+        <Leaf size={42} color="#24753e" />
       </View>
       <Text style={styles.title}>Bringing Transparency{'\n'}to</Text>
       <Text style={styles.titleBold}>Agriculture with{'\n'}Blockchain</Text>
@@ -21,7 +23,7 @@ const GetStartedpage: React.FC = () => {
       <TouchableOpacity style={styles.exploreBtn}>
         <Text style={styles.exploreText}>Explore Features</Text>
       </TouchableOpacity>
-    </View>
+    </ImageBackground>
   );
 };
 
@@ -32,11 +34,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#41b883',
     paddingHorizontal: 24,
     paddingTop: 64,
     paddingBottom: 40,
-    borderRadius: 0,
+  },
+  backgroundImage: {
+    opacity: 0.7,
+    resizeMode: 'cover',
   },
   logoBox: {
     backgroundColor: '#99e2b4',
@@ -48,11 +52,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.08,
     shadowRadius: 6,
     elevation: 5,  
-  },
-  logo: {
-    width: 42,
-    height: 42,
-    borderRadius: 10,
   },
   title: {
     fontSize: 23,
